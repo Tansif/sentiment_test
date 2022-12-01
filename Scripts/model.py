@@ -138,7 +138,7 @@ class XLNetFGBC(nn.Module):
         mean_last_hidden_state = torch.mean(last_hidden_state, 1)
         return mean_last_hidden_state
     
- class AlbertFGBC(nn.Module): # Below lines newly added
+class AlbertFGBC(nn.Module): # Below lines newly added
     def __init__(self, pretrained_model = args.pretrained_model):
         super().__init__()
         self.Albert = AlbertModel.from_pretrained(pretrained_model)
