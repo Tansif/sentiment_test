@@ -26,6 +26,7 @@ def max_vote():
     xlnet_pred = []
     roberta_pred = []
     distilbert_pred = []
+    albert_pred = [] #Newly_Added
 
     for index in range(len(bert)):
        target.append(bert['target'][index])
@@ -33,6 +34,7 @@ def max_vote():
        xlnet_pred.append(xlnet['y_pred'][index])
        roberta_pred.append(roberta['y_pred'][index])
        distilbert_pred.append(distilbert['y_pred'][index])
+       albert_pred.append(albert['y_pred'][index]) #Newly_Added
 
     max_vote_df = pd.DataFrame()
     max_vote_df['target'] = target
@@ -40,6 +42,7 @@ def max_vote():
     max_vote_df['xlnet'] = xlnet_pred
     max_vote_df['roberta'] = roberta_pred
     max_vote_df['distilbert'] = distilbert_pred
+    max_vote_df['albert'] = albert_pred #Newly_Added
 
     # print_stats(max_vote_df, bert, xlnet, roberta, distilbert)
 
@@ -55,7 +58,7 @@ def max_vote():
     evaluate_ensemble(max_vote_df)
 
 def averaging():
-    bert, xlnet, roberta, distilbert = load_models()
+    bert, xlnet, roberta, distilbert, albert = load_models() #Newly_Added
     test_df = pd.read_csv(f'{args.dataset_path}test.csv').dropna()
     device = set_device()
 
@@ -79,10 +82,16 @@ def averaging():
     distilbert_output, target, proba = test_eval_fn_ensemble(test_data_loader, distilbert, device, pretrained_model="distilbert-base-uncased")
     del distilbert, test_data_loader
     
+    albert.to(device) #Newly Added 4 below lines
+    test_data_loader = generate_dataset_for_ensembling(pretrained_model="albert-base-v2", df=test_df)
+    albert_output, target, proba = test_eval_fn_ensemble(test_data_loader, albert, device, pretrained_model="albert-base-v2")
+    del albert, test_data_loader
+    
     output1 = np.add(bert_output, xlnet_output)
     output2 = np.add(roberta_output, distilbert_output)
-    output = np.add(output1, output2)
-    output = (np.divide(output,4.0))
+    output3 = np.add(output1, output2) #Marked as output 3 Newly Added
+    output = np.add(output3, albert_output) #Full line newly Added
+    output = (np.divide(output,5.0)) # PRevously divide by 4, now 5, newly added
     output = np.argmax(output, axis=1)
 
     y_test = target
