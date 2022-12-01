@@ -6,8 +6,8 @@ from collections import defaultdict
 import warnings
 
 import engine
-from model import BertFGBC, RobertaFGBC, XLNetFGBC, DistilBertFGBC
-from dataset import DatasetBert, DatasetRoberta, DatasetXLNet, DatasetDistilBert
+from model import BertFGBC, RobertaFGBC, XLNetFGBC, DistilBertFGBC, AlbertFGBC #Newly Added
+from dataset import DatasetBert, DatasetRoberta, DatasetXLNet, DatasetDistilBert, Albert # Newly Added
 from common import get_parser
 from evaluate import test_evaluate
 from utils import set_device
@@ -155,6 +155,8 @@ def generate_dataset(df):
         return DatasetXLNet(text=df.text.values, target=df.target.values)
     elif(args.pretrained_model == "distilbert-base-uncased"):
         return DatasetDistilBert(text=df.text.values, target=df.target.values)
+    elif(args.pretrained_model == "albert-base-v2"): # Newly Added 2 lines
+    return DatasetAlbert(text=df.text.values, target=df.target.values)
 
 def set_model():
     if(args.pretrained_model == "bert-base-uncased"):
@@ -165,6 +167,8 @@ def set_model():
         return XLNetFGBC()
     elif(args.pretrained_model == "distilbert-base-uncased"):
         return DistilBertFGBC()
+    elif(args.pretrained_model == "albert-base-v2"):  # Newly Added 2 lines
+    return AlbertFGBC() 
 
 def count_model_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
