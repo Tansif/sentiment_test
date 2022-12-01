@@ -168,7 +168,7 @@ def set_model():
     elif(args.pretrained_model == "distilbert-base-uncased"):
         return DistilBertFGBC()
     elif(args.pretrained_model == "albert-base-v2"):  # Newly Added 2 lines
-    return AlbertFGBC() 
+        return AlbertFGBC() 
 
 def count_model_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
