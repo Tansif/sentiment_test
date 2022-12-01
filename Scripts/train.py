@@ -156,7 +156,7 @@ def generate_dataset(df):
     elif(args.pretrained_model == "distilbert-base-uncased"):
         return DatasetDistilBert(text=df.text.values, target=df.target.values)
     elif(args.pretrained_model == "albert-base-v2"): # Newly Added 2 lines
-    return DatasetAlbert(text=df.text.values, target=df.target.values)
+        return DatasetAlbert(text=df.text.values, target=df.target.values)
 
 def set_model():
     if(args.pretrained_model == "bert-base-uncased"):
