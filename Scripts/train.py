@@ -7,7 +7,7 @@ import warnings
 
 import engine
 from model import BertFGBC, RobertaFGBC, XLNetFGBC, DistilBertFGBC, AlbertFGBC #Newly Added
-from dataset import DatasetBert, DatasetRoberta, DatasetXLNet, DatasetDistilBert, Albert # Newly Added
+from dataset import DatasetBert, DatasetRoberta, DatasetXLNet, DatasetDistilBert, DatasetAlbert # Newly Added
 from common import get_parser
 from evaluate import test_evaluate
 from utils import set_device
