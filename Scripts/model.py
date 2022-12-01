@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from transformers import BertModel, RobertaModel, XLNetModel, DistilBertModel
+from transformers import BertModel, RobertaModel, XLNetModel, DistilBertModel, AlbertModel  #newly Added
 
 from common import get_parser
 
@@ -137,3 +137,30 @@ class XLNetFGBC(nn.Module):
         last_hidden_state = last_hidden_state[0]
         mean_last_hidden_state = torch.mean(last_hidden_state, 1)
         return mean_last_hidden_state
+    
+ class AlbertFGBC(nn.Module): # Below lines newly added
+    def __init__(self, pretrained_model = args.pretrained_model):
+        super().__init__()
+        self.Albert = AlbertModel.from_pretrained(pretrained_model)
+        self.drop1 = nn.Dropout(args.dropout)
+        self.linear = nn.Linear(args.roberta_hidden, 64)
+        self.batch_norm = nn.LayerNorm(64)
+        self.drop2 = nn.Dropout(args.dropout)
+        self.out = nn.Linear(64, args.classes)
+
+    def forward(self, input_ids, attention_mask):
+        _,last_hidden_state = self.Albert(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            return_dict=False
+        )
+
+        bo = self.drop1(last_hidden_state)
+        bo = self.linear(bo)
+        bo = self.batch_norm(bo)
+        bo = nn.Tanh()(bo)
+        bo = self.drop2(bo)
+
+        output = self.out(bo)
+
+        return output
