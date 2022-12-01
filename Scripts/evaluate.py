@@ -43,7 +43,7 @@ def test_evaluate(test_df, test_data_loader, model, device, pretrained_model = a
     calc_roc_auc(np.array(y_test), np.array(y_proba))
 
 def evaluate_all_models():
-    bert, xlnet, roberta, distilbert = load_models()
+    bert, xlnet, roberta, distilbert, albert = load_models() #Newly_Added
     test_df = pd.read_csv(f'{args.dataset_path}test.csv').dropna()
     device = set_device()
 
@@ -66,6 +66,11 @@ def evaluate_all_models():
     test_data_loader = generate_dataset_for_ensembling(pretrained_model="distilbert-base-uncased", df=test_df)
     test_evaluate(test_df, test_data_loader, distilbert, device, pretrained_model="distilbert-base-uncased")
     del distilbert, test_data_loader
+    
+    albert.to(device) # Newly Added below 4 lines
+    test_data_loader = generate_dataset_for_ensembling(pretrained_model="albert-base-v2", df=test_df)
+    test_evaluate(test_df, test_data_loader, albert, device, pretrained_model="albert-base-v2")
+    del albert, test_data_loader
 
 if __name__ == "__main__":
     bert_path = (f'{args.model_path}bert-base-uncased_Best_Val_Acc.bin')
