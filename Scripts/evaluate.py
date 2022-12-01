@@ -68,8 +68,8 @@ def evaluate_all_models():
     del distilbert, test_data_loader
     
     albert.to(device) # Newly Added below 4 lines
-    test_data_loader = generate_dataset_for_ensembling(pretrained_model="albert-base-v2", df=test_df)
-    test_evaluate(test_df, test_data_loader, albert, device, pretrained_model="albert-base-v2")
+    test_data_loader = generate_dataset_for_ensembling(pretrained_model="albert-large-v2", df=test_df)
+    test_evaluate(test_df, test_data_loader, albert, device, pretrained_model="albert-large-v2")
     del albert, test_data_loader
 
 if __name__ == "__main__":
