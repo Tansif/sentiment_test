@@ -155,7 +155,7 @@ def generate_dataset(df):
         return DatasetXLNet(text=df.text.values, target=df.target.values)
     elif(args.pretrained_model == "distilbert-base-uncased"):
         return DatasetDistilBert(text=df.text.values, target=df.target.values)
-    elif(args.pretrained_model == "albert-large-v2"): # Newly Added 2 lines
+    elif(args.pretrained_model == "albert-base-v2"): # Newly Added 2 lines
         return DatasetAlbert(text=df.text.values, target=df.target.values)
 
 def set_model():
@@ -167,7 +167,7 @@ def set_model():
         return XLNetFGBC()
     elif(args.pretrained_model == "distilbert-base-uncased"):
         return DistilBertFGBC()
-    elif(args.pretrained_model == "albert-large-v2"):  # Newly Added 2 lines
+    elif(args.pretrained_model == "albert-base-v2"):  # Newly Added 2 lines
         return AlbertFGBC() 
 
 def count_model_parameters(model):
