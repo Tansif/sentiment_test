@@ -50,7 +50,7 @@ def load_prediction():
     xlnet_path = (f'{args.output_path}xlnet-base-cased---test_acc---0.949685534591195.csv')
     roberta_path = (f'{args.output_path}roberta-base---test_acc---0.949685534591195.csv')
     distilbert_path = (f'{args.output_path}distilbert-base-uncased---test_acc---0.9275471698113208.csv')
-    albert_path = (f'{args.output_path}albert-base-v2---test_acc.csv')
+    albert_path = (f'{args.output_path}albert-base-v2---test_acc.csv') # New Added
 
     bert = pd.read_csv(bert_path)
     xlnet = pd.read_csv(xlnet_path)
@@ -67,7 +67,7 @@ def print_stats(max_vote_df, bert, xlnet, roberta, distilbert, albert):
     print(f'---XLNet---\n{xlnet.y_pred.value_counts()}')
     print(f'---Roberta---\n{roberta.y_pred.value_counts()}')
     print(f'---DistilBert---\n{distilbert.y_pred.value_counts()}')
-    print(f'---Albert---\n{Albert.y_pred.value_counts()}')
+    print(f'---Albert---\n{albert.y_pred.value_counts()}') # New Added
 
 def evaluate_ensemble(max_vote_df):
     y_test = max_vote_df['target'].values
@@ -99,8 +99,8 @@ def generate_dataset_for_ensembling(pretrained_model, df):
         dataset = DatasetXLNet(text=df.text.values, target=df.target.values, pretrained_model="xlnet-base-cased")
     elif(pretrained_model == "distilbert-base-uncased"):
         dataset = DatasetDistilBert(text=df.text.values, target=df.target.values, pretrained_model="distilbert-base-uncased")
-    elif(pretrained_model == "albert-base-v2"):
-        dataset = DatasetAlbert(text=df.text.values, target=df.target.values, pretrained_model="albert-base-v2")
+    elif(pretrained_model == "albert-base-v2"): # New added this two lines
+        dataset = DatasetAlbert(text=df.text.values, target=df.target.values, pretrained_model="albert-base-v2") 
 
     data_loader = torch.utils.data.DataLoader(
         dataset = dataset,
@@ -115,19 +115,19 @@ def load_models():
     xlnet_path = (f'{args.model_path}xlnet-base-cased_Best_Val_Acc.bin')
     roberta_path = (f'{args.model_path}roberta-base_Best_Val_Acc.bin')
     distilbert_path = (f'{args.model_path}distilbert-base-uncased_Best_Val_Acc.bin')
-    albert_path = (f'{args.model_path}albert-base-v2_Best_Val_Acc.bin')
+    albert_path = (f'{args.model_path}albert-base-v2_Best_Val_Acc.bin') # New Added
 
     bert = BertFGBC(pretrained_model="bert-base-uncased")
     xlnet = XLNetFGBC(pretrained_model="xlnet-base-cased")
     roberta = RobertaFGBC(pretrained_model="roberta-base")
     distilbert = DistilBertFGBC(pretrained_model="distilbert-base-uncased")
-    albert = DistilBertFGBC(pretrained_model="albert-base-v2")
+    albert = DistilBertFGBC(pretrained_model="albert-base-v2") # New Added
 
     bert.load_state_dict(torch.load(bert_path))
     xlnet.load_state_dict(torch.load(xlnet_path))
     roberta.load_state_dict(torch.load(roberta_path))
     distilbert.load_state_dict(torch.load(distilbert_path))
-    albert.load_state_dict(torch.load(albert_path))
+    albert.load_state_dict(torch.load(albert_path)) # New Added
 
     return bert, xlnet, roberta, distilbert, albert
 
