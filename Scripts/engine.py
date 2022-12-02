@@ -112,7 +112,7 @@ def test_eval_fn_ensemble(data_loader, model, device, pretrained_model = args.pr
     return final_output, final_target
 
 def generate_output(data, model, device, pretrained_model = args.pretrained_model):
-    if(pretrained_model == "roberta-base" or pretrained_model == "distilbert-base-uncased" or pretrained_model == "albert-large-v2"): #Added_new
+    if(pretrained_model == "roberta-base" or pretrained_model == "distilbert-base-uncased" or pretrained_model == "albert-base-v2"): #Added_new
             input_ids = data["input_ids"]
             attention_mask = data["attention_mask"]
             target = data["target"]
